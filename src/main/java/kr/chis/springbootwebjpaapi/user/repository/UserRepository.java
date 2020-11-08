@@ -1,4 +1,4 @@
-package kr.chis.springbootwebjpaapi.user;
+package kr.chis.springbootwebjpaapi.user.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
