@@ -1,8 +1,11 @@
 package kr.chis.springbootwebjpaapi.user;
 
+import kr.chis.springbootwebjpaapi.user.repository.Authority;
 import kr.chis.springbootwebjpaapi.user.repository.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
