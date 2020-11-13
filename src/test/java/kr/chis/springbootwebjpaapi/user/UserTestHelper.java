@@ -1,11 +1,9 @@
 package kr.chis.springbootwebjpaapi.user;
 
-import kr.chis.springbootwebjpaapi.user.repository.Authority;
 import kr.chis.springbootwebjpaapi.user.repository.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,19 +17,24 @@ public class UserTestHelper {
     public UserTestHelper(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
 
-        user1 = new User().builder()
+        user1 = User.builder()
                 .id(1L)
                 .email("use1@mail.com")
                 .name("사용자1")
                 .cellPhone("010-1111-1111")
+                .authorities(new HashSet<>())
+                //.authorities(Sets.newSet(Authority.ADMIN))
                 .password(passwordEncoder.encode("1111"))
                 .build();
 
-        user2 = new User().builder()
+        new User();
+        user1 = User.builder()
                 .id(2L)
                 .email("use2@mail.com")
                 .name("사용자2")
                 .cellPhone("010-2222-2222")
+                .authorities(new HashSet<>())
+                //.authorities(Sets.newSet(Authority.USER))
                 .password(passwordEncoder.encode("2222"))
                 .build();
     }
@@ -40,11 +43,12 @@ public class UserTestHelper {
 
 
 
-    public User createOneUser(){
+    public User createUser1(){
         return user1;
     }
 
-    public void assertOneUser(User user){
+
+    public void assertUser1(User user){
         assertThat(user.getId()).as("Expect :" + user1.getId()).isEqualTo(user1.getId());
         assertThat(user.getUsername()).as("Expect :" + user1.getUsername()).isEqualTo(user1.getUsername());
         assertThat(user.getCellPhone()).as("Expect :" + user1.getCellPhone()).isEqualTo(user1.getCellPhone());

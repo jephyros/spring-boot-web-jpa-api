@@ -1,5 +1,6 @@
 package kr.chis.springbootwebjpaapi.user;
 
+import kr.chis.springbootwebjpaapi.user.repository.Authority;
 import kr.chis.springbootwebjpaapi.user.repository.User;
 import kr.chis.springbootwebjpaapi.user.repository.UserRepository;
 import kr.chis.springbootwebjpaapi.user.service.UserService;
@@ -9,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 @DataJpaTest
@@ -35,10 +35,11 @@ public class UserRepositoryTest {
     @Test
     public void test_1(){
         //given
-        User user1 = userTestHelper.createOneUser();
+        User user1 = userTestHelper.createUser1();
+        user1.addAuthority(Authority.ADMIN);
         //when
         User saveuser = userService.save(user1);
         //then
-        userTestHelper.assertOneUser(saveuser);
+        userTestHelper.assertUser1(saveuser);
     }
 }
