@@ -37,21 +37,26 @@ public class AppRunner implements ApplicationRunner {
                 .authorities(new HashSet<>())
                 .password(passwordEncoder.encode("1111"))
                 .build();
-        admin.addAuthority(new Authority(Authority.ROLE_ADMIN));
         userRepository.save(admin);
+        userRepository.findByEmail(admin.getEmail())
+                .ifPresent(user->{
+                    user.addAuthority(new Authority(Authority.ROLE_ADMIN));
+                    user.addAuthority(new Authority(Authority.ROLE_USER));
+                    userRepository.save(user);
+                });
 
-        User admin2 = User.builder()
-                .id(2L)
-                .email("admin2@mail.com")
-                .name("관리자2")
+        User user = User.builder()
+                //.id(2L)
+                .email("user@mail.com")
+                .name("사용")
                 .cellPhone("010-1111-2222")
                 .active(true)
                 .authorities(new HashSet<>())
                 .password(passwordEncoder.encode("1111"))
                 .build();
-        admin2.addAuthority(new Authority(Authority.ROLE_ADMIN));
-        userRepository.save(admin2);
-
+        User saveUser = userRepository.save(user);
+        saveUser.addAuthority(new Authority(Authority.ROLE_ADMIN));
+        userRepository.save(saveUser);
 
 
 

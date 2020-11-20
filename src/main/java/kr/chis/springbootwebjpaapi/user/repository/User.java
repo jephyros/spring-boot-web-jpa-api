@@ -60,11 +60,14 @@ public class User implements UserDetails {
     }
 
     public User addAuthority(Authority authority){
-        //todo 권한추가 시 set 을 사용할 경우 복합키?
-        this.authorities.add(authority);
+        authority.authorityId.setUser_id(this.id);
+
+        //동일 권한이 없을때만 추가한다.
+        if (!authorities.contains(authority)) this.authorities.add(authority);
         return this;
     }
     public User removeAuthority(Authority authority){
+
         this.authorities.remove(authority);
         return this;
     }
