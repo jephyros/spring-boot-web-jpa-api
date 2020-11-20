@@ -12,6 +12,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @DataJpaTest
 @ActiveProfiles("test")
 public class UserRepositoryTest {
@@ -35,11 +38,16 @@ public class UserRepositoryTest {
     @Test
     public void test_1(){
         //given
+
         User user1 = userTestHelper.createUser1();
-        user1.addAuthority(Authority.ADMIN);
-        //when
+
+        user1.addAuthority(new Authority(Authority.ROLE_ADMIN));
         User saveuser = userService.save(user1);
+
+        //when
+
         //then
         userTestHelper.assertUser1(saveuser);
+        System.out.println("========: "+ saveuser.getAuthorities().size());
     }
 }

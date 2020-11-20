@@ -1,9 +1,11 @@
 package kr.chis.springbootwebjpaapi.user;
 
+import kr.chis.springbootwebjpaapi.user.repository.Authority;
 import kr.chis.springbootwebjpaapi.user.repository.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,19 +24,18 @@ public class UserTestHelper {
                 .email("use1@mail.com")
                 .name("사용자1")
                 .cellPhone("010-1111-1111")
+                .active(true)
                 .authorities(new HashSet<>())
-                //.authorities(Sets.newSet(Authority.ADMIN))
                 .password(passwordEncoder.encode("1111"))
                 .build();
 
-        new User();
-        user1 = User.builder()
+        user2 = User.builder()
                 .id(2L)
                 .email("use2@mail.com")
                 .name("사용자2")
                 .cellPhone("010-2222-2222")
+                .active(true)
                 .authorities(new HashSet<>())
-                //.authorities(Sets.newSet(Authority.USER))
                 .password(passwordEncoder.encode("2222"))
                 .build();
     }
@@ -52,5 +53,6 @@ public class UserTestHelper {
         assertThat(user.getId()).as("Expect :" + user1.getId()).isEqualTo(user1.getId());
         assertThat(user.getUsername()).as("Expect :" + user1.getUsername()).isEqualTo(user1.getUsername());
         assertThat(user.getCellPhone()).as("Expect :" + user1.getCellPhone()).isEqualTo(user1.getCellPhone());
+        assertThat(user.getAuthorities().size()).as("Expect : X > 0").isGreaterThan(0);
     }
 }

@@ -29,15 +29,28 @@ public class AppRunner implements ApplicationRunner {
 
         //관리자 계정을 넣는다.
         User admin = User.builder()
-                .id(1L)
+                //.id(1L)
                 .email("admin@mail.com")
                 .name("관리자")
                 .cellPhone("010-1111-2222")
+                .active(true)
                 .authorities(new HashSet<>())
                 .password(passwordEncoder.encode("1111"))
                 .build();
-        admin.addAuthority(Authority.ADMIN);
+        admin.addAuthority(new Authority(Authority.ROLE_ADMIN));
         userRepository.save(admin);
+
+        User admin2 = User.builder()
+                .id(2L)
+                .email("admin2@mail.com")
+                .name("관리자2")
+                .cellPhone("010-1111-2222")
+                .active(true)
+                .authorities(new HashSet<>())
+                .password(passwordEncoder.encode("1111"))
+                .build();
+        admin2.addAuthority(new Authority(Authority.ROLE_ADMIN));
+        userRepository.save(admin2);
 
 
 

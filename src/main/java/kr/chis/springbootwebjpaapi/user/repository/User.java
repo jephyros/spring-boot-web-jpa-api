@@ -20,6 +20,7 @@ import java.util.Set;
 @Builder
 public class User implements UserDetails {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String email;
@@ -59,6 +60,7 @@ public class User implements UserDetails {
     }
 
     public User addAuthority(Authority authority){
+        //todo 권한추가 시 set 을 사용할 경우 복합키?
         this.authorities.add(authority);
         return this;
     }

@@ -31,16 +31,16 @@ public class UserTest {
         User user = userTestHelper.createUser1();
 
         //1개추가
-        user.addAuthority(Authority.ADMIN);
-        assertThat(1).as("expect : 1").isEqualTo(user.getAuthorities().size());
+        user.addAuthority(new Authority(Authority.ROLE_ADMIN));
+        assertThat(1).as("관리자 권한 1개추가 expect : 1").isEqualTo(user.getAuthorities().size());
 
         //같은 권한 중복 추가 안되는지 테스트
-        user.addAuthority(Authority.ADMIN);
-        assertThat(1).as("expect : 1").isEqualTo(user.getAuthorities().size());
+        user.addAuthority(new Authority(Authority.ROLE_ADMIN));
+        assertThat(1).as("관리자 권한 중복 추가시 추가안되는지 expect : 1").isEqualTo(user.getAuthorities().size());
 
         //1개추가 하여 2개
-        user.addAuthority(Authority.USER);
-        assertThat(2).as("expect : 2").isEqualTo(user.getAuthorities().size());
+        user.addAuthority(new Authority(Authority.ROLE_USER));
+        assertThat(2).as("권한 2개 추가 expect : 2").isEqualTo(user.getAuthorities().size());
 
     }
 }
