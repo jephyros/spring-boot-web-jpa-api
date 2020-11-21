@@ -1,5 +1,6 @@
 package kr.chis.springbootwebjpaapi.user.repository;
 
+import kr.chis.springbootwebjpaapi.common.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User implements UserDetails {
+public class User extends BaseEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -67,7 +68,7 @@ public class User implements UserDetails {
         return this;
     }
     public User removeAuthority(Authority authority){
-
+        authority.authorityId.setUser_id(this.id);
         this.authorities.remove(authority);
         return this;
     }

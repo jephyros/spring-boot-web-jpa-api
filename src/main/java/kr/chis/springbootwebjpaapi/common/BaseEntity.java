@@ -13,17 +13,16 @@ import java.time.LocalDateTime;
 /**
  * @author InSeok
  * Date : 2020/11/21
- * Remark :
+ * Remark : 데이터 생성 수정시간 자동저장 (Application 클래스에 @EnableJpaAuditing 추가)
  */
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 public abstract class BaseEntity {
-    //todo 날짜 자동저장?
 
     @CreatedDate
-    @Column(name="create_date")
-    private LocalDateTime createDate;
+    @Column(name="created_date")
+    private LocalDateTime createdDate;
 
     //AuditorAware 인터페이스를 구현하여
     //SecurityContext 에서 인증정보를 가져와 사용 할수있으나 지금 RestAPI는 별도로 ID를 받을예정
@@ -32,8 +31,8 @@ public abstract class BaseEntity {
 //    private String createId;
 
     @LastModifiedDate
-    @Column(name="modify_date")
-    private LocalDateTime modifyData;
+    @Column(name="modified_date")
+    private LocalDateTime modifiedDate;
 
     //AuditorAware 인터페이스를 구현하여
     //SecurityContext 에서 인증정보를 가져와 사용 할수있으나 지금 RestAPI는 별도로 ID를 받을예정

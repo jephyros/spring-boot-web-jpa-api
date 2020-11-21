@@ -50,4 +50,5 @@ public class UserRepositoryTest {
         userTestHelper.assertUser1(saveuser);
         System.out.println("========: "+ saveuser.getAuthorities().size());
     }
+    //todo스 - 유저 수정,삭제 ,업데이트 테스트케이
 }
