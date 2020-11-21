@@ -55,4 +55,12 @@ public class UserTestHelper {
         assertThat(user.getCellPhone()).as("Expect :" + user1.getCellPhone()).isEqualTo(user1.getCellPhone());
         assertThat(user.getAuthorities().size()).as("Expect : X > 0").isGreaterThan(0);
     }
+
+    public User createAdminRoleUser(){
+        return user1.addAuthority(new Authority(Authority.ROLE_ADMIN));
+    }
+
+    public User createUserRoleUser(){
+        return user1.addAuthority(new Authority(Authority.ROLE_USER));
+    }
 }

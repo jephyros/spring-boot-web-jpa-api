@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 /**
  * @author InSeok
  * Date : 2020/11/21
- * Remark : 데이터 생성 수정시간 자동저장 (Application 클래스에 @EnableJpaAuditing 추가)
+ * Remark : 데이터 생성 수정시간 자동저장 (Application 클래스 또는 Config 클래스에 @EnableJpaAuditing 추가)
  */
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)

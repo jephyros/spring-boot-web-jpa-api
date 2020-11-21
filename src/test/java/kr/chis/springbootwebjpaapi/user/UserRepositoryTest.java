@@ -50,5 +50,5 @@ public class UserRepositoryTest {
         userTestHelper.assertUser1(saveuser);
         System.out.println("========: "+ saveuser.getAuthorities().size());
     }
-    //todo스 - 유저 수정,삭제 ,업데이트 테스트케이
+    //todo - 유저이메일은 중복저장이안된다. 유저 수정,삭제 ,업데이트 테스트케이
 }
