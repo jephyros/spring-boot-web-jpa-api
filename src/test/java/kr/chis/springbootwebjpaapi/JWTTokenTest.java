@@ -5,6 +5,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import kr.chis.springbootwebjpaapi.config.JWTUtil;
+import kr.chis.springbootwebjpaapi.config.JWTVerify;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +14,7 @@ import org.springframework.context.annotation.Profile;
 
 import java.time.Instant;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -42,6 +45,19 @@ public class JWTTokenTest {
         verify.getClaims().forEach(this::printClaim);
 
     }
+    @DisplayName("2. JWT Util 토큰생성 및 검증함수")
+    @Test
+    public void test_2(){
+        JWTUtil jwtUtil = new JWTUtil();
+        String token = jwtUtil.createToken("user@mail.com");
+        JWTVerify verify = jwtUtil.verify(token);
+        JWTVerify verify2 = jwtUtil.verify(token+"err");
+
+        assertThat(verify.getVerify()).as("정상 토큰 검증 Expect : true").isEqualTo(true);
+        assertThat(verify2.getVerify()).as("오류 토큰검증 Expect : false").isEqualTo(false);
+
+
+    }
     private void printClaim(String key, Claim claim){
         if(claim.asDate() != null){
             System.out.printf("%s : %s\n",key,claim.asDate().toString());
@@ -50,4 +66,5 @@ public class JWTTokenTest {
             System.out.printf("%s : %s\n",key,claim.toString());
         }
     }
+
 }

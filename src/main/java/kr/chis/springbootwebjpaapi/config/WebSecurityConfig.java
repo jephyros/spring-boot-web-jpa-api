@@ -16,6 +16,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
     private final ObjectMapper objectMapper;
+    private JWTUtil jwtUtil = new JWTUtil();
 
     public WebSecurityConfig(UserService userService, ObjectMapper objectMapper) {
         this.userService = userService;
@@ -40,10 +41,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        JWTLoginFilter jwtLoginFilter = new JWTLoginFilter(objectMapper, authenticationManager());
+        JWTLoginFilter jwtLoginFilter = new JWTLoginFilter(jwtUtil ,objectMapper, authenticationManager());
+        JWTCheckFilter jwtCheckFilter = new JWTCheckFilter(jwtUtil,userService,authenticationManager());
+
         http
                 .csrf().disable()
                 .addFilter(jwtLoginFilter)
+                .addFilter(jwtCheckFilter)
                 //.authorizeRequests().antMatchers("/login").permitAll()
                 //.and()
                 .authorizeRequests().antMatchers("/**").authenticated()
