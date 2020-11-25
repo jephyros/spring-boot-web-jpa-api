@@ -55,7 +55,7 @@ public class AppRunner implements ApplicationRunner {
                 .password(passwordEncoder.encode("1111"))
                 .build();
         User saveUser = userRepository.save(user);
-        saveUser.addAuthority(new Authority(Authority.ROLE_ADMIN));
+        saveUser.addAuthority(new Authority(Authority.ROLE_USER));
         userRepository.save(saveUser);
 
 

@@ -1,5 +1,6 @@
 package kr.chis.springbootwebjpaapi.user.repository;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.chis.springbootwebjpaapi.common.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +28,7 @@ public class User extends BaseEntity implements UserDetails {
     private String email;
     private String name;
     private String cellPhone;
+    @JsonIgnore
     private String password;
     private Boolean active;
 

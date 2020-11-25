@@ -1,9 +1,11 @@
 package kr.chis.springbootwebjpaapi.user.controller;
 
+import kr.chis.springbootwebjpaapi.common.ResponsePage;
 import kr.chis.springbootwebjpaapi.user.repository.User;
 import kr.chis.springbootwebjpaapi.user.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -19,7 +21,10 @@ public class UserRestController {
     }
 
     @GetMapping
-    public List<User> userlist(){
-        return userService.findbySearch();
+    public ResponsePage<User> list(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size
+    ){
+        return ResponsePage.of(userService.list(page,size));
     }
 }

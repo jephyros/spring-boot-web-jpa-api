@@ -56,7 +56,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     }
-    //todo-- user ID 와 비번을 받아서 토근 발급받는 URL 필요
-    //todo--
-    //todo security 사용지 페이징 오작동 관련 설정
+
+
 }

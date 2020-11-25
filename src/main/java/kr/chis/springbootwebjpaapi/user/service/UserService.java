@@ -4,6 +4,9 @@ import kr.chis.springbootwebjpaapi.user.repository.Authority;
 import kr.chis.springbootwebjpaapi.user.repository.User;
 import kr.chis.springbootwebjpaapi.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,8 +24,8 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public List<User> findbySearch(){
-        return userRepository.findAll();
+    public Page<User> list(Integer page, Integer size){
+        return userRepository.findAll(PageRequest.of(page-1,size));
     }
 
     public Optional<User> findByEmail(String email){
