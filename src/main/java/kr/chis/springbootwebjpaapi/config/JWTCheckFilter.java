@@ -33,7 +33,7 @@ public class JWTCheckFilter extends BasicAuthenticationFilter {
 
         String token = request.getHeader("authorization");
         //토큰이 없으면 security chain으로 넘긴다. 인증정보가없으므로 인증실패됨
-        if(token.isEmpty() || !token.startsWith("Bearer ")){
+        if(token == null || !token.startsWith("Bearer ")){
             chain.doFilter(request,response);
             return;
         }

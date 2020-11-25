@@ -41,7 +41,7 @@ public class UserRestControllerTest {
         userTestHelper= new UserTestHelper(new BCryptPasswordEncoder());
     }
 
-    @DisplayName("1. 인증 접근이 불가능하다.")
+    @DisplayName("1. 인증 정보가 없을경우 접근이 불가능하다.")
     @Test
     public void test_1() throws Exception {
         mockMvc.perform(get("/api/v1/users"))
