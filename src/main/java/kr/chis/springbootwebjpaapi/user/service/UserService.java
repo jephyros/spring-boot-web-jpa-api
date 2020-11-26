@@ -24,6 +24,10 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
+    public void deleteByEmail(String email){
+        userRepository.deleteByEmail(email);
+    }
+
     public Page<User> list(Integer page, Integer size){
         return userRepository.findAll(PageRequest.of(page-1,size));
     }

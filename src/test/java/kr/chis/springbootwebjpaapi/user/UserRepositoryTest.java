@@ -15,6 +15,8 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @DataJpaTest
 @ActiveProfiles("test")
 public class UserRepositoryTest {
@@ -42,13 +44,32 @@ public class UserRepositoryTest {
         User user1 = userTestHelper.createUser1();
 
         user1.addAuthority(new Authority(Authority.ROLE_ADMIN));
+
+        //when
+        User saveuser = userService.save(user1);
+        //then
+        userTestHelper.assertUser1(saveuser);
+        //System.out.println("========: "+ saveuser.getAuthorities().size());
+    }
+
+    @DisplayName("2. 유저를 삭제한다.")
+    @Test
+    public void test_2(){
+        //given
+
+        User user1 = userTestHelper.createUser1();
+
+        user1.addAuthority(new Authority(Authority.ROLE_ADMIN));
         User saveuser = userService.save(user1);
 
         //when
-
+        userService.deleteByEmail(saveuser.getEmail());
         //then
-        userTestHelper.assertUser1(saveuser);
-        System.out.println("========: "+ saveuser.getAuthorities().size());
+
+
+        assertThat(userRepository.findAll().size()).as("유저가 삭제되서 데이터가 없다. Expect : 0").isEqualTo(0);
+        //System.out.println("========: "+ saveuser.getAuthorities().size());
     }
+
     //todo - 유저이메일은 중복저장이안된다. 유저 수정,삭제 ,업데이트 테스트케이
 }

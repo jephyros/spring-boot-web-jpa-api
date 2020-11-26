@@ -25,12 +25,16 @@ import static java.lang.String.format;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+//@SpringBootTest
 public class UserRestControllerTest {
     @LocalServerPort
     private int port;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     private UserTestHelper userTestHelper;
 
@@ -65,8 +69,10 @@ public class UserRestControllerTest {
 
         User user1 = userTestHelper.createUser1();
 
+        //System.out.println("========="+ userRepository.findAll().size());
         //user1.addAuthority(new Authority(Authority.ROLE_ADMIN));
-        User saveuser = userService.save(user1);
+        //User saveuser = userService.save(user1);
+
 
 
         //String token = getToken("user1@mail.com", "1111");
