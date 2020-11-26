@@ -43,4 +43,8 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new RuntimeException("사용자정보가 정확하지않습니다."));
     }
 
+    public void deleteAll(){
+        userRepository.deleteAll();
+    }
+
 }

@@ -20,8 +20,8 @@ public class UserTestHelper {
         this.passwordEncoder = passwordEncoder;
 
         user1 = User.builder()
-                .id(1L)
-                .email("use1@mail.com")
+                //.id(1L)
+                .email("user1@mail.com")
                 .name("사용자1")
                 .cellPhone("010-1111-1111")
                 .active(true)
@@ -30,8 +30,8 @@ public class UserTestHelper {
                 .build();
 
         user2 = User.builder()
-                .id(2L)
-                .email("use2@mail.com")
+                //.id(2L)
+                .email("user2@mail.com")
                 .name("사용자2")
                 .cellPhone("010-2222-2222")
                 .active(true)
@@ -39,8 +39,6 @@ public class UserTestHelper {
                 .password(passwordEncoder.encode("2222"))
                 .build();
     }
-
-
 
 
 
