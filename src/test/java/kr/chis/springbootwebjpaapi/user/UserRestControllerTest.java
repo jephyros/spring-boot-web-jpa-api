@@ -31,12 +31,10 @@ public class UserRestControllerTest {
     private int port;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private UserRepository userRepository;
 
     private UserTestHelper userTestHelper;
+    private UserService userService;
 
 
     private RestTemplate restTemplate = new RestTemplate();
@@ -48,7 +46,8 @@ public class UserRestControllerTest {
     @BeforeEach
     public void before(){
         userTestHelper = new UserTestHelper(new BCryptPasswordEncoder());
-        userService.deleteAll();
+        //userService = new UserService(userRepository);
+        //userService.deleteAll();
 
 
 
@@ -66,11 +65,11 @@ public class UserRestControllerTest {
     @Test
     public void test_1() throws URISyntaxException {
         //given
-
-        User user1 = userTestHelper.createUser1();
-        //todo -- 에러확인
+        //System.out.println("=========== size"+userRepository.findAll().size());
+        //User user1 = userTestHelper.createUser1();
+        //todo -- 에러확인 저장은되는데 삭제오류
         //user1.addAuthority(new Authority(Authority.ROLE_ADMIN));
-        User saveuser = userService.save(user1);
+        //User saveuser = userService.save(user1);
 
 
 

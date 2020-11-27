@@ -23,8 +23,20 @@ public class UserService implements UserDetailsService {
     public User save(User user){
         return userRepository.save(user);
     }
+    public User addAuthority(User user,String authority){
+        //todo user_id is null 일경우 에러
+        user.addAuthority(new Authority(authority));
+        return userRepository.save(user);
+    }
+
+    public User removeAuthority(User user,String authority){
+        //todo user_id is null 일경우 에러
+        user.removeAuthority(new Authority(authority));
+        return userRepository.save(user);
+    }
 
     public void deleteByEmail(String email){
+
         userRepository.deleteByEmail(email);
     }
 

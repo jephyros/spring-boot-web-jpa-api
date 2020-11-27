@@ -10,11 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,8 +24,10 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
+
     UserService userService;
     UserTestHelper userTestHelper;
+    PasswordEncoder passwordEncoder;
 
     @BeforeEach
     public void before(){
@@ -35,6 +36,7 @@ public class UserRepositoryTest {
         userTestHelper = new UserTestHelper(new BCryptPasswordEncoder());
         userService = new UserService(userRepository);
         userService.deleteAll();
+        passwordEncoder = new BCryptPasswordEncoder();
 
     }
 
@@ -45,19 +47,28 @@ public class UserRepositoryTest {
 
         User user1 = userTestHelper.createUser1();
 
-        user1.addAuthority(new Authority(Authority.ROLE_ADMIN));
-        user1.addAuthority(new Authority(Authority.ROLE_USER));
+//        user1.addAuthority(new Authority(Authority.ROLE_ADMIN));
+//        user1.addAuthority(new Authority(Authority.ROLE_USER));
+
 
         //when
-        userService.save(user1);
+        User saveUser1 = userService.save(user1);
+        userService.addAuthority(saveUser1,Authority.ROLE_ADMIN);
+        //같은권한 두번 저장해도 추가되지않는다.
+        userService.addAuthority(saveUser1,Authority.ROLE_ADMIN);
+        userService.addAuthority(saveUser1,Authority.ROLE_USER);
+        //총 2개의 권한을 넣는다.
+
         //then
         Optional<User> saveuser = userService.findByEmail(user1.getEmail());
         assertThat(saveuser.isPresent()).as("저장한 유저가 존재한다. Expect : true").isEqualTo(true);
         saveuser.ifPresent(user->{
             userTestHelper.assertUser1(user);
-            user.getAuthorities().forEach(e-> System.out.println("======="+e.getAuthority()));
-
+            assertThat(user.getAuthorities().size()).as("사용자 Role 이 2개있다. Expect : 2").isEqualTo(2);
         });
+
+
+
 
     }
 
@@ -68,8 +79,9 @@ public class UserRepositoryTest {
 
         User user1 = userTestHelper.createUser1();
 
-        user1.addAuthority(new Authority(Authority.ROLE_ADMIN));
-        userService.save(user1);
+        User saveUser1 = userService.save(user1);
+
+        userService.addAuthority(saveUser1,Authority.ROLE_USER);
 
 
         //when
@@ -79,9 +91,6 @@ public class UserRepositoryTest {
                 .as("삭제된 유저를 조회했을경우 데이터가 없다. Expect")
                 .isEqualTo(false);
 
-
-
     }
-
     //todo - 유저이메일은 중복저장이안된다. 유저 수정,삭제 ,업데이트 테스트케이
 }

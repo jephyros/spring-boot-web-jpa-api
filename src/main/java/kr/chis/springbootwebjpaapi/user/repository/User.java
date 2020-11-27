@@ -32,7 +32,7 @@ public class User extends BaseEntity implements UserDetails {
     private String password;
     private Boolean active;
 
-    @OneToMany(cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)//,fetch = FetchType.EAGER)
     @JoinColumn(name ="user_id")
     private final Set<Authority> authorities = new HashSet<>();
 

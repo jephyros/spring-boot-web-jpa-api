@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserRestController {
@@ -18,6 +16,8 @@ public class UserRestController {
 
     public UserRestController(UserService userService) {
         this.userService = userService;
+
+
     }
 
     @GetMapping
@@ -25,6 +25,7 @@ public class UserRestController {
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size
     ){
+
         return ResponsePage.of(userService.list(page,size));
     }
 }

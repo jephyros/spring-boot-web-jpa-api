@@ -29,7 +29,7 @@ public class AppRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
 
-        //관리자 계정을 넣는다.
+//        //관리자 계정을 넣는다.
         User admin = User.builder()
                 .email("admin@mail.com")
                 .name("관리자")
@@ -37,9 +37,9 @@ public class AppRunner implements ApplicationRunner {
                 .active(true)
                 .password(passwordEncoder.encode("1111"))
                 .build();
-        //admin.addAuthority(new Authority(Authority.ROLE_ADMIN));
-        //admin.addAuthority(new Authority(Authority.ROLE_USER));
-        userService.save(admin);
+        User saveAdmin = userService.save(admin);
+        userService.addAuthority(saveAdmin,Authority.ROLE_ADMIN);
+        userService.addAuthority(saveAdmin,Authority.ROLE_USER);
 
         User user = User.builder()
                 .email("user@mail.com")
@@ -48,11 +48,12 @@ public class AppRunner implements ApplicationRunner {
                 .active(true)
                 .password(passwordEncoder.encode("1111"))
                 .build();
-//        User saveUser = userRepository.save(user);
-//        saveUser.addAuthority(new Authority(Authority.ROLE_USER));
-//        userRepository.save(saveUser);
+        User saveUser = userService.save(user);
+        saveUser.addAuthority(new Authority(Authority.ROLE_USER));
+        userService.save(saveUser);
 
-
+        //todo delete check
+        //userService.deleteByEmail("user@mail.com");
 
     }
 }
