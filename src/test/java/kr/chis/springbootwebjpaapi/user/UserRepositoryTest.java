@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,9 +31,10 @@ public class UserRepositoryTest {
     @BeforeEach
     public void before(){
         //각각 테스트 전에 모두 지운다.
-        userRepository.deleteAll();
+
         userTestHelper = new UserTestHelper(new BCryptPasswordEncoder());
         userService = new UserService(userRepository);
+        userService.deleteAll();
 
     }
 
@@ -44,12 +46,19 @@ public class UserRepositoryTest {
         User user1 = userTestHelper.createUser1();
 
         user1.addAuthority(new Authority(Authority.ROLE_ADMIN));
+        user1.addAuthority(new Authority(Authority.ROLE_USER));
 
         //when
-        User saveuser = userService.save(user1);
+        userService.save(user1);
         //then
-        userTestHelper.assertUser1(saveuser);
-        //System.out.println("========: "+ saveuser.getAuthorities().size());
+        Optional<User> saveuser = userService.findByEmail(user1.getEmail());
+        assertThat(saveuser.isPresent()).as("저장한 유저가 존재한다. Expect : true").isEqualTo(true);
+        saveuser.ifPresent(user->{
+            userTestHelper.assertUser1(user);
+            user.getAuthorities().forEach(e-> System.out.println("======="+e.getAuthority()));
+
+        });
+
     }
 
     @DisplayName("2. 유저를 삭제한다.")
@@ -60,15 +69,18 @@ public class UserRepositoryTest {
         User user1 = userTestHelper.createUser1();
 
         user1.addAuthority(new Authority(Authority.ROLE_ADMIN));
-        User saveuser = userService.save(user1);
+        userService.save(user1);
+
 
         //when
-        userService.deleteByEmail(saveuser.getEmail());
+        userService.deleteByEmail(user1.getEmail());
         //then
+        assertThat(userService.findByEmail(user1.getEmail()).isPresent())
+                .as("삭제된 유저를 조회했을경우 데이터가 없다. Expect")
+                .isEqualTo(false);
 
 
-        assertThat(userRepository.findAll().size()).as("유저가 삭제되서 데이터가 없다. Expect : 0").isEqualTo(0);
-        //System.out.println("========: "+ saveuser.getAuthorities().size());
+
     }
 
     //todo - 유저이메일은 중복저장이안된다. 유저 수정,삭제 ,업데이트 테스트케이

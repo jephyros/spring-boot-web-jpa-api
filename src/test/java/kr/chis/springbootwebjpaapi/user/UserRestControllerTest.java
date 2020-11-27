@@ -68,10 +68,9 @@ public class UserRestControllerTest {
         //given
 
         User user1 = userTestHelper.createUser1();
-
-        //System.out.println("========="+ userRepository.findAll().size());
+        //todo -- 에러확인
         //user1.addAuthority(new Authority(Authority.ROLE_ADMIN));
-        //User saveuser = userService.save(user1);
+        User saveuser = userService.save(user1);
 
 
 

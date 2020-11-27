@@ -52,6 +52,7 @@ public class UserRestControllerAccessTest {
     @Test
     public void test_2() throws Exception {
         User admin = userTestHelper.createAdminRoleUser();
+        //System.out.println("---------admin:" + admin.getAuthorities().size());
         mockMvc.perform(get("/api/v1/users").with(user(admin)))
                 .andExpect(status().is2xxSuccessful());
     }
