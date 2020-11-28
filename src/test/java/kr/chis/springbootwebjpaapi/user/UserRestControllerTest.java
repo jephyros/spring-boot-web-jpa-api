@@ -25,7 +25,6 @@ import static java.lang.String.format;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-//@SpringBootTest
 public class UserRestControllerTest {
     @LocalServerPort
     private int port;
@@ -46,8 +45,8 @@ public class UserRestControllerTest {
     @BeforeEach
     public void before(){
         userTestHelper = new UserTestHelper(new BCryptPasswordEncoder());
-        //userService = new UserService(userRepository);
-        //userService.deleteAll();
+        userService = new UserService(userRepository);
+        userService.deleteAll();
 
 
 
@@ -58,6 +57,7 @@ public class UserRestControllerTest {
         HttpEntity<LoginMapper> body = new HttpEntity<>(loginUser);
         ResponseEntity<String> response = restTemplate.exchange(uri("/token"), HttpMethod.POST, body, String.class);
 
+        System.out.println("==========");
         return response.getHeaders().get("authorization").toString();
     }
 
@@ -65,16 +65,17 @@ public class UserRestControllerTest {
     @Test
     public void test_1() throws URISyntaxException {
         //given
-        //System.out.println("=========== size"+userRepository.findAll().size());
-        //User user1 = userTestHelper.createUser1();
-        //todo -- 에러확인 저장은되는데 삭제오류
-        //user1.addAuthority(new Authority(Authority.ROLE_ADMIN));
-        //User saveuser = userService.save(user1);
+        User user1 = userTestHelper.createUser("user1");
+        User saveUser = userService.save(user1);
+        userService.addAuthority(saveUser, Authority.ROLE_ADMIN);
+
+        userTestHelper.assertUser("user1",saveUser);
 
 
 
-        //String token = getToken("user1@mail.com", "1111");
-        //System.out.println("========" + token);
+
+        String token = getToken(user1.getEmail(), user1.getPassword());
+        System.out.println("========" + token);
 
         //when
 

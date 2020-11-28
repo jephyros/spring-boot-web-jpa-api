@@ -1,5 +1,7 @@
 package kr.chis.springbootwebjpaapi.user;
 
+import kr.chis.springbootwebjpaapi.common.ResponsePage;
+import kr.chis.springbootwebjpaapi.config.WebSecurityConfig;
 import kr.chis.springbootwebjpaapi.user.controller.UserRestController;
 import kr.chis.springbootwebjpaapi.user.repository.User;
 import kr.chis.springbootwebjpaapi.user.repository.UserRepository;
@@ -11,10 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -22,8 +27,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 
 
+
 @WebMvcTest(UserRestController.class)
 @ActiveProfiles("test")
+@Import(WebSecurityConfig.class)
 public class UserRestControllerAccessTest {
     @Autowired
     private MockMvc mockMvc;
@@ -52,6 +59,7 @@ public class UserRestControllerAccessTest {
     @Test
     public void test_2() throws Exception {
         User admin = userTestHelper.createAdminRoleUser();
+        //given(userService.list(0,0)).willReturn(Page.empty());
         //System.out.println("---------admin:" + admin.getAuthorities().size());
         mockMvc.perform(get("/api/v1/users").with(user(admin)))
                 .andExpect(status().is2xxSuccessful());

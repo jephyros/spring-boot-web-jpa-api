@@ -42,6 +42,22 @@ public class UserTestHelper {
         return user1;
     }
 
+    public User createUser(String username){
+        return User.builder()
+                .email(username +"@mail.com")
+                .name(username +"이름")
+                .cellPhone(username + "010-1111-1111")
+                .active(true)
+                .password(passwordEncoder.encode(username+"1234"))
+                .build();
+    }
+
+    public void assertUser(String username,User user){
+        assertThat(user.getId()).as("아이디가 Null 아이니다 ").isNotNull();
+        assertThat(user.getName()).as("Expect : " + username + "이름").isEqualTo(username + "이름");
+        assertThat(user.getCellPhone()).as("Expect : " + username + "010-1111-1111").isEqualTo(username + "010-1111-1111");
+    }
+
     public User createUser2(){
         return user2;
     }

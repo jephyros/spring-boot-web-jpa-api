@@ -30,11 +30,14 @@ public class ResponsePage<T> extends PageImpl<T> {
     }
 
     public static <U> ResponsePage of(Page<U> page){
+        if (page == null) return new ResponsePage<U>(Page.empty());
         return new ResponsePage<U>(page);
     }
 
     public ResponsePage(Page<T> page) {
         super(page.getContent(), page.getPageable(), page.getTotalElements());
+
+
     }
 
     public ResponsePage(List<T> content, Pageable pageable, long total) {

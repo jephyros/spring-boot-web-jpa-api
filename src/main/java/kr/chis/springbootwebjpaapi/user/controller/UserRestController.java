@@ -1,12 +1,10 @@
 package kr.chis.springbootwebjpaapi.user.controller;
 
+import javassist.NotFoundException;
 import kr.chis.springbootwebjpaapi.common.ResponsePage;
 import kr.chis.springbootwebjpaapi.user.repository.User;
 import kr.chis.springbootwebjpaapi.user.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -27,5 +25,10 @@ public class UserRestController {
     ){
 
         return ResponsePage.of(userService.list(page,size));
+    }
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable("id") Long userId) throws NotFoundException {
+        return userService.getUser(userId);
+
     }
 }
