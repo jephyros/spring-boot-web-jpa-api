@@ -1,5 +1,6 @@
 package kr.chis.springbootwebjpaapi.user;
 
+import javassist.NotFoundException;
 import kr.chis.springbootwebjpaapi.user.repository.Authority;
 import kr.chis.springbootwebjpaapi.user.repository.User;
 import kr.chis.springbootwebjpaapi.user.repository.UserRepository;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -18,6 +20,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+//@SpringBootTest
 @ActiveProfiles("test")
 public class UserRepositoryTest {
 
@@ -35,8 +38,8 @@ public class UserRepositoryTest {
 
         userTestHelper = new UserTestHelper(new BCryptPasswordEncoder());
         userService = new UserService(userRepository);
-        userService.deleteAll();
         passwordEncoder = new BCryptPasswordEncoder();
+        userService.deleteAll();
 
     }
 
@@ -44,7 +47,7 @@ public class UserRepositoryTest {
     @Test
     public void test_1(){
         //given
-
+        System.out.println("===============>:" + userRepository.findAll().size());
         User user1 = userTestHelper.createUser1();
 
 //        user1.addAuthority(new Authority(Authority.ROLE_ADMIN));
@@ -67,6 +70,7 @@ public class UserRepositoryTest {
             assertThat(user.getAuthorities().size()).as("사용자 Role 이 2개있다. Expect : 2").isEqualTo(2);
         });
 
+        //userRepository.deleteById(saveuser.get().getId());
 
 
 
@@ -74,7 +78,7 @@ public class UserRepositoryTest {
 
     @DisplayName("2. 유저를 삭제한다.")
     @Test
-    public void test_2(){
+    public void test_2() throws NotFoundException {
         //given
 
         User user1 = userTestHelper.createUser1();
@@ -92,5 +96,6 @@ public class UserRepositoryTest {
                 .isEqualTo(false);
 
     }
+
     //todo - 유저이메일은 중복저장이안된다. 유저 수정,삭제 ,업데이트 테스트케이
 }

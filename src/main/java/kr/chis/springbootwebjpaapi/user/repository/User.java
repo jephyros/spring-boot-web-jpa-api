@@ -32,9 +32,9 @@ public class User extends BaseEntity implements UserDetails {
     private String password;
     private Boolean active;
 
-    @OneToMany(cascade = CascadeType.ALL)//,fetch = FetchType.EAGER)
-    @JoinColumn(name ="user_id")
-    private final Set<Authority> authorities = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,orphanRemoval = true)
+    @JoinColumn(name ="user_fk")
+    private  final Set<Authority> authorities = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

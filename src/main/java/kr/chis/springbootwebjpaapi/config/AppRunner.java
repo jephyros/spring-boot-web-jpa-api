@@ -52,8 +52,11 @@ public class AppRunner implements ApplicationRunner {
         saveUser.addAuthority(new Authority(Authority.ROLE_USER));
         userService.save(saveUser);
 
-        //todo delete check
-        //userService.deleteByEmail("user@mail.com");
+//        try {
+//            userService.deleteByEmail("admin@mail.com");
+//        } catch (NotFoundException e) {
+//            e.printStackTrace();
+//        }
 
     }
 }
