@@ -66,6 +66,7 @@ public class UserRestControllerTest {
     public void test_1() throws URISyntaxException {
         //given
         User user1 = userTestHelper.createUser("user1");
+
         User saveUser = userService.save(user1);
         userService.addAuthority(saveUser, Authority.ROLE_ADMIN);
 
@@ -73,8 +74,9 @@ public class UserRestControllerTest {
 
 
 
+        //System.out.println("========passwoord" + user1.getPassword());
 
-        String token = getToken(user1.getEmail(), user1.getPassword());
+        String token = getToken(user1.getEmail(), "user11234");
         System.out.println("========" + token);
 
         //when

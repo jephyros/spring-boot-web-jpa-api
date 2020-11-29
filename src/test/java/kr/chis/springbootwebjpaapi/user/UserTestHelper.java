@@ -2,6 +2,7 @@ package kr.chis.springbootwebjpaapi.user;
 
 import kr.chis.springbootwebjpaapi.user.repository.Authority;
 import kr.chis.springbootwebjpaapi.user.repository.User;
+import kr.chis.springbootwebjpaapi.user.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
@@ -18,7 +19,6 @@ public class UserTestHelper {
 
     public UserTestHelper(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
-
         user1 = User.builder()
                 .email("user1@mail.com")
                 .name("사용자1")

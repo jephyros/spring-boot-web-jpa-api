@@ -55,6 +55,6 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
 
         log.info("로그인 실패 : {}",failed.getMessage());
-        //super.unsuccessfulAuthentication(request, response, failed);
+        super.unsuccessfulAuthentication(request, response, failed);
     }
 }
