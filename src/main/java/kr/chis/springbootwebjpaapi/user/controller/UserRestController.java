@@ -28,7 +28,7 @@ public class UserRestController {
     }
     @GetMapping("/{id}")
     public User getUser(@PathVariable("id") Long userId) throws NotFoundException {
-        return userService.getUser(userId);
+        return userService.getUser(userId).orElseThrow(()-> new NotFoundException("데이터가 없습니다."));
 
     }
 }

@@ -48,8 +48,8 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll(PageRequest.of(page-1,size));
     }
 
-    public User getUser(Long userId) throws NotFoundException {
-        return userRepository.findById(userId).orElseThrow(()->new NotFoundException("데이터가 존재하지않습니다."));
+    public Optional<User> getUser(Long userId) throws NotFoundException {
+        return userRepository.findById(userId);
     }
 
     public Optional<User> findByEmail(String email){
