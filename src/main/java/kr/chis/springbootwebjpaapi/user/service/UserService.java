@@ -48,7 +48,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll(PageRequest.of(page-1,size));
     }
 
-    public Optional<User> getUser(Long userId) throws NotFoundException {
+    public Optional<User> findById(Long userId)  {
         return userRepository.findById(userId);
     }
 
