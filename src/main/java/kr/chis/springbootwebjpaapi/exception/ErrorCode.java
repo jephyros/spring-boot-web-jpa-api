@@ -9,12 +9,14 @@ import lombok.Getter;
  */
 @Getter
 public enum ErrorCode {
+    //Unknown Error
+    UNKNOWN_ERROR(500,"U999","Unknown Error"),
+
     // Common
     INVALID_INPUT_VALUE(400, "C001", " Invalid Input Value"),
     METHOD_NOT_ALLOWED(405, "C002", " Invalid Input Value"),
     HANDLE_ACCESS_DENIED(403, "C006", "Access is Denied"),
-
-    // Member
+    // User& Login
     EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),
     LOGIN_INPUT_INVALID(400, "M002", "Login input is invalid"),
 

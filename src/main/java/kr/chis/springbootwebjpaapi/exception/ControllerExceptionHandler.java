@@ -15,18 +15,25 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 @Slf4j
 public class ControllerExceptionHandler {
-    /**
-     *  javax.validation.Valid or @Validated 으로 binding error 발생시 발생한다.
-     *  HttpMessageConverter 에서 등록한 HttpMessageConverter binding 못할경우 발생
-     *  주로 @RequestBody, @RequestPart 어노테이션에서 발생
-     */
-    @ExceptionHandler(UserException.class)
-    protected ResponseEntity<ErrorResponse> handleException(Exception e) {
-        log.error("handleEntityNotFoundException", e);
-        final ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE);
+
+//    @ExceptionHandler(UserException.class)
+//    protected ResponseEntity<ErrorResponse> userExceptionHandler(UserException e) {
+//        log.error("UserException : ", e.getMessage());
+//        final ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE);
+//        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
+
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<ErrorResponse> unKnownExceptionHandler(Exception e) {
+        log.error("unKnownExceptionHandler", e);
+        final ErrorResponse response = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR,e,ErrorCode.UNKNOWN_ERROR);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
+//    /**
+//     *  javax.validation.Valid or @Validated 으로 binding error 발생시 발생한다.
+//     *  HttpMessageConverter 에서 등록한 HttpMessageConverter binding 못할경우 발생
+//     *  주로 @RequestBody, @RequestPart 어노테이션에서 발생
+//     */
 //    @ExceptionHandler(MethodArgumentNotValidException.class)
 //    protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 //        log.error("handleMethodArgumentNotValidException", e);
@@ -85,10 +92,5 @@ public class ControllerExceptionHandler {
 //    }
 //
 //
-//    @ExceptionHandler(Exception.class)
-//    protected ResponseEntity<ErrorResponse> handleException(Exception e) {
-//        log.error("handleEntityNotFoundException", e);
-//        final ErrorResponse response = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
-//        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
+
 }
