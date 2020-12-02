@@ -1,6 +1,7 @@
 package kr.chis.springbootwebjpaapi.user.service;
 
 import javassist.NotFoundException;
+import kr.chis.springbootwebjpaapi.exception.UserException;
 import kr.chis.springbootwebjpaapi.user.repository.Authority;
 import kr.chis.springbootwebjpaapi.user.repository.User;
 import kr.chis.springbootwebjpaapi.user.repository.UserRepository;
@@ -36,11 +37,13 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public void deleteByEmail(String email) throws NotFoundException {
+    public User deleteByEmail(String email)  {
 
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new NotFoundException("삭제할자료가 없습니다."));
-        userRepository.delete(user);
+         return userRepository.findByEmail(email)
+                .map(user -> {
+                    userRepository.delete(user);
+                    return user;
+                }).orElseThrow(()-> new UserException("삭제할데이터가 없습니다."));
 
     }
 
