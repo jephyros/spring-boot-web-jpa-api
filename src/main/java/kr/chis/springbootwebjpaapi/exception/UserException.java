@@ -6,7 +6,13 @@ package kr.chis.springbootwebjpaapi.exception;
  * Remark :
  */
 public class UserException extends RuntimeException{
-    public UserException(String message) {
-        super(message);
+    private ErrorCode errorCode;
+    public UserException(ErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.errorCode = errorCode;
+    }
+
+    public ErrorCode getErrorCode() {
+        return errorCode;
     }
 }

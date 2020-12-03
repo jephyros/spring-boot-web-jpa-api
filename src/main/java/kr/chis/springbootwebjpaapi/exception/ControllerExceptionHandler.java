@@ -1,11 +1,16 @@
 package kr.chis.springbootwebjpaapi.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.stream.Collectors;
 
 /**
  * @author InSeok
@@ -23,10 +28,17 @@ public class ControllerExceptionHandler {
 //        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 //    }
 
+    @ExceptionHandler(UserException.class)
+    protected ResponseEntity<ErrorResponse> userExceptionHandler(final HttpServletRequest request, UserException e) throws IOException {
+        log.info("userExceptionHandler Message :{}, RequestPath: {}", e, request.getRequestURL());
+        final ErrorResponse response = ErrorResponse.of(e,e.getErrorCode(),request);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(e.getErrorCode().getStatus()));
+    }
+
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ErrorResponse> unKnownExceptionHandler(Exception e) {
-        log.error("unKnownExceptionHandler", e);
-        final ErrorResponse response = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR,e,ErrorCode.UNKNOWN_ERROR);
+    protected ResponseEntity<ErrorResponse> unKnownExceptionHandler(final HttpServletRequest request, Exception e) throws IOException {
+        log.info("UnknownExceptionHandler Message :{}, RequestPath: {}", e, request.getRequestURL());
+        final ErrorResponse response = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR,e,ErrorCode.UNKNOWN_ERROR,request);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 //    /**

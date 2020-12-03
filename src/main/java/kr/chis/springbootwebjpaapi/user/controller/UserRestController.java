@@ -2,6 +2,7 @@ package kr.chis.springbootwebjpaapi.user.controller;
 
 import javassist.NotFoundException;
 import kr.chis.springbootwebjpaapi.common.ResponsePage;
+import kr.chis.springbootwebjpaapi.exception.ErrorCode;
 import kr.chis.springbootwebjpaapi.exception.UserException;
 import kr.chis.springbootwebjpaapi.user.repository.User;
 import kr.chis.springbootwebjpaapi.user.service.UserService;
@@ -32,7 +33,7 @@ public class UserRestController {
     }
     @GetMapping("/{id}")
     public User getUser(@PathVariable("id") Long userId) {
-        return userService.findById(userId).orElseThrow(()-> new UserException("데이터가 없습니다."));
+        return userService.findById(userId).orElseThrow(()-> new UserException(ErrorCode.USER_DATA_NOT_FOUND));
 
     }
 }

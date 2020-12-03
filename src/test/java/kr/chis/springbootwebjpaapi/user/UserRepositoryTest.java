@@ -42,7 +42,7 @@ public class UserRepositoryTest {
 
     }
 
-    @DisplayName("1. 유저를 저장한다.")
+    @DisplayName("1. 사용자를 신규 저장한다.")
     @Test
     public void test_1(){
         //given
@@ -75,7 +75,7 @@ public class UserRepositoryTest {
 
     }
 
-    @DisplayName("2. 유저를 삭제한다.")
+    @DisplayName("2. 사용자정보를 삭제한다.")
     @Test
     public void test_2() throws NotFoundException {
         //given
@@ -95,6 +95,11 @@ public class UserRepositoryTest {
                 .isEqualTo(false);
 
     }
+
+    //사용 이름,전화번호를 수정한다.
+
+    //사용자 신규저장시 중복 이메일로 저장이안된다.
+
 
     //todo - 유저이메일은 중복저장이안된다. 유저 수정,삭제 ,업데이트 테스트케이
 }

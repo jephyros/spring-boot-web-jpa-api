@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Executable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,7 +37,7 @@ public class ErrorResponse {
         "path": "/api/v1/users/22"
     }
      */
-    private ErrorResponse(HttpStatus status, Exception e, ErrorCode errorCode) {
+    private ErrorResponse(HttpStatus status, Exception e, ErrorCode errorCode, HttpServletRequest request) {
 
         this.timestamp = LocalDateTime.now();
         this.status = status.value();
@@ -44,13 +45,31 @@ public class ErrorResponse {
         this.message = e.getMessage();
         this.errorCode = errorCode.getCode();
         this.errorMessage = errorCode.getMessage();
-        this.path = "";//todo
+        this.path = request.getRequestURL().toString();
 
 
     }
 
-    public static ErrorResponse of(HttpStatus status, Exception e, ErrorCode errorCode) {
-        return new ErrorResponse(status, e, errorCode);
+    private ErrorResponse(Exception e, ErrorCode errorCode, HttpServletRequest request) {
+
+        this.timestamp = LocalDateTime.now();
+        this.status = errorCode.getStatus();
+        this.error = e.getMessage();
+        this.message = e.getMessage();
+        this.errorCode = errorCode.getCode();
+        this.errorMessage = errorCode.getMessage();
+        this.path = request.getRequestURL().toString();
+
+
+    }
+
+    public static ErrorResponse of(HttpStatus status, Exception e, ErrorCode errorCode, HttpServletRequest request) {
+        return new ErrorResponse(status, e, errorCode, request);
+
+    }
+
+    public static ErrorResponse of(Exception e, ErrorCode errorCode, HttpServletRequest request) {
+        return new ErrorResponse(e, errorCode, request);
 
     }
 }

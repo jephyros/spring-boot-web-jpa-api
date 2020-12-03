@@ -85,6 +85,15 @@ public class UserRestControllerTest {
 
     }
 
+    //개별조회
+
+    //개별조회시 데이터없을겨우 에러 반환
+
+    //사용자 이름,전화번호를 수정한다.
+
+
+    //관리자가 사용자를 삭제한다.
+
 
     //todo Rest Controller Integration Test
 
