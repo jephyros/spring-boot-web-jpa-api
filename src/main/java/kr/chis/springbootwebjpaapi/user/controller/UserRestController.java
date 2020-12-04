@@ -5,6 +5,7 @@ import kr.chis.springbootwebjpaapi.common.ResponsePage;
 import kr.chis.springbootwebjpaapi.exception.ErrorCode;
 import kr.chis.springbootwebjpaapi.exception.UserException;
 import kr.chis.springbootwebjpaapi.user.repository.User;
+import kr.chis.springbootwebjpaapi.user.service.UserMapper;
 import kr.chis.springbootwebjpaapi.user.service.UserService;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +39,10 @@ public class UserRestController {
 
     }
     @PostMapping
-    public User saveUser(@RequestBody User user) {
+    public User saveUser(@RequestBody UserMapper userMapper) {
+        System.out.println(userMapper.toString());
         //todo UserMapper (권한포함)
-        return userService.save(user);
+        return  null; //userService.save(user);
 
     }
 }
