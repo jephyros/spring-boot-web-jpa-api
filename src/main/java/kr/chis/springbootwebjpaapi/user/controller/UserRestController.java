@@ -40,9 +40,16 @@ public class UserRestController {
     }
     @PostMapping
     public User saveUser(@RequestBody UserMapper userMapper) {
-        System.out.println(userMapper.toString());
-        //todo UserMapper (권한포함)
-        return  null; //userService.save(user);
+
+        //todo UserMapper 필수정보 체크 할것
+        return  userService.save(userMapper);
+
+    }
+    @PutMapping
+    public User updateUser(@RequestBody UserMapper userMapper) {
+        //사용자 이름 전화번호 수정
+        //todo UserMapper 필수정보 체크 할것
+        return  userService.modifyUser(userMapper);
 
     }
 }

@@ -2,6 +2,7 @@ package kr.chis.springbootwebjpaapi.user;
 
 import kr.chis.springbootwebjpaapi.user.repository.Authority;
 import kr.chis.springbootwebjpaapi.user.repository.User;
+import kr.chis.springbootwebjpaapi.user.service.UserMapper;
 import kr.chis.springbootwebjpaapi.user.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -26,6 +27,16 @@ public class UserTestHelper {
                 .cellPhone(username + "010-1111-1111")
                 .active(true)
                 .password(passwordEncoder.encode(username+"1234"))
+                .build();
+    }
+
+    public UserMapper createUserMapper(String username){
+        return UserMapper.builder()
+                .email(username +"@mail.com")
+                .name(username +"이름")
+                .cellPhone(username + "010-1111-1111")
+                .active(true)
+                .password(username+"1234")
                 .build();
     }
 

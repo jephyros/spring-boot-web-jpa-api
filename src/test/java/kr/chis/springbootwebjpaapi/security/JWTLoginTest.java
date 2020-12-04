@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.chis.springbootwebjpaapi.config.LoginMapper;
 import kr.chis.springbootwebjpaapi.user.UserTestHelper;
 import kr.chis.springbootwebjpaapi.user.repository.User;
+import kr.chis.springbootwebjpaapi.user.service.UserMapper;
 import kr.chis.springbootwebjpaapi.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -62,7 +63,7 @@ public class JWTLoginTest {
     public void test_1() throws Exception {
         //given
         //db데이터 user 데이터저장
-        User user1 = userTestHelper.createUser("user1");
+        UserMapper user1 = userTestHelper.createUserMapper("user1");
         userService.save(user1);
 
         LoginMapper loginUser = LoginMapper.builder().username(user1.getEmail()).password("user11234").build();
@@ -80,7 +81,7 @@ public class JWTLoginTest {
     public void test_2() throws Exception {
         //given
         //db데이터 user 데이터저장
-        User user1 = userTestHelper.createUser("user1");
+        UserMapper user1 = userTestHelper.createUserMapper("user1");
         userService.save(user1);
 
         //패스워드가 틀릴경우

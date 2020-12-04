@@ -4,6 +4,7 @@ import javassist.NotFoundException;
 import kr.chis.springbootwebjpaapi.user.repository.Authority;
 import kr.chis.springbootwebjpaapi.user.repository.User;
 import kr.chis.springbootwebjpaapi.user.repository.UserRepository;
+import kr.chis.springbootwebjpaapi.user.service.UserMapper;
 import kr.chis.springbootwebjpaapi.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,21 +48,23 @@ public class UserRepositoryTest {
     public void test_1(){
         //given
 
-        User user1 = userTestHelper.createUser("user1");
+        UserMapper user1 = userTestHelper.createUserMapper("user1");
+
 
         //when
-        User saveUser1 = userService.save(user1);
-        userService.addAuthority(saveUser1,Authority.ROLE_ADMIN);
-        //같은권한 두번 저장해도 추가되지않는다.
-        userService.addAuthority(saveUser1,Authority.ROLE_ADMIN);
-        userService.addAuthority(saveUser1,Authority.ROLE_USER);
+
         //총 2개의 권한을 넣는다.
+        //같은권한 두번 저장해도 추가되지않는다.
+        user1.addAuthority(Authority.ROLE_ADMIN);
+        user1.addAuthority(Authority.ROLE_ADMIN);
+        user1.addAuthority(Authority.ROLE_USER);
+        User saveUser1 = userService.save(user1);
 
         //then
         Optional<User> saveuser = userService.findByEmail(user1.getEmail());
         assertThat(saveuser.isPresent()).as("저장한 유저가 존재한다. Expect : true").isEqualTo(true);
         saveuser.ifPresent(user->{
-            userTestHelper.assertUser("user1",user1);
+            userTestHelper.assertUser("user1",saveUser1);
             assertThat(user.getAuthorities().size()).as("사용자 Role 이 2개있다. Expect : 2").isEqualTo(2);
         });
 
@@ -74,11 +77,11 @@ public class UserRepositoryTest {
     public void test_2() {
         //given
 
-        User user1 = userTestHelper.createUser("user1");
-
+        UserMapper user1 = userTestHelper.createUserMapper("user1");
+        user1.addAuthority(Authority.ROLE_USER);
         User saveUser1 = userService.save(user1);
 
-        userService.addAuthority(saveUser1,Authority.ROLE_USER);
+
 
 
         //when
@@ -96,25 +99,26 @@ public class UserRepositoryTest {
     @Test
     public void test_3() {
         //given
-        User user1 = userTestHelper.createUser("user1");
+        UserMapper user1 = userTestHelper.createUserMapper("user1");
+        user1.addAuthority(Authority.ROLE_USER);
         User saveUser1 = userService.save(user1);
-        userService.addAuthority(saveUser1,Authority.ROLE_USER);
+
 
         //when
-        saveUser1.setName("changeName");
-        saveUser1.setCellPhone("changeNumber");
-        userService.modifyUser(saveUser1);
+        user1.setName("changeName");
+        user1.setCellPhone("changeNumber");
+        userService.modifyUser(user1);
 
         //then
         userService.findByEmail(saveUser1.getEmail())
                 .ifPresent(
                         v->{
                             assertThat(v.getName())
-                                    .as("사용자 이름이 수정되었는지 확인 Expect : " + saveUser1.getName())
-                                    .isEqualTo(saveUser1.getName());
+                                    .as("사용자 이름이 수정되었는지 확인 Expect : " + user1.getName())
+                                    .isEqualTo(user1.getName());
                             assertThat(v.getCellPhone())
-                                    .as("사용자 전화번호가 수정되었는지 확인 Expect : " + saveUser1.getCellPhone())
-                                    .isEqualTo(saveUser1.getCellPhone());
+                                    .as("사용자 전화번호가 수정되었는지 확인 Expect : " + user1.getCellPhone())
+                                    .isEqualTo(user1.getCellPhone());
                         }
                 );
 

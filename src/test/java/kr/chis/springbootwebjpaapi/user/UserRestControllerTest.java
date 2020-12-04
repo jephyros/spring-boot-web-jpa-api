@@ -4,6 +4,7 @@ import kr.chis.springbootwebjpaapi.config.LoginMapper;
 import kr.chis.springbootwebjpaapi.user.repository.Authority;
 import kr.chis.springbootwebjpaapi.user.repository.User;
 import kr.chis.springbootwebjpaapi.user.repository.UserRepository;
+import kr.chis.springbootwebjpaapi.user.service.UserMapper;
 import kr.chis.springbootwebjpaapi.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -65,10 +66,10 @@ public class UserRestControllerTest {
     @Test
     public void test_1() throws URISyntaxException {
         //given
-        User user1 = userTestHelper.createUser("user1");
-
+        UserMapper user1 = userTestHelper.createUserMapper("user1");
+        user1.addAuthority(Authority.ROLE_ADMIN);
         User saveUser = userService.save(user1);
-        userService.addAuthority(saveUser, Authority.ROLE_ADMIN);
+
 
         userTestHelper.assertUser("user1",saveUser);
 

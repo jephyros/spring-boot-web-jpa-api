@@ -3,6 +3,7 @@ package kr.chis.springbootwebjpaapi.config;
 
 import kr.chis.springbootwebjpaapi.user.repository.Authority;
 import kr.chis.springbootwebjpaapi.user.repository.User;
+import kr.chis.springbootwebjpaapi.user.service.UserMapper;
 import kr.chis.springbootwebjpaapi.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -30,27 +31,28 @@ public class AppRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) {
 
 //        //관리자 계정을 넣는다.
-        User admin = User.builder()
+        UserMapper admin = UserMapper.builder()
                 .email("admin@mail.com")
                 .name("관리자")
                 .cellPhone("010-1111-2222")
                 .active(true)
-                .password(passwordEncoder.encode("1111"))
+                .password("1111")
                 .build();
-        User saveAdmin = userService.save(admin);
-        userService.addAuthority(saveAdmin,Authority.ROLE_ADMIN);
-        userService.addAuthority(saveAdmin,Authority.ROLE_USER);
+        admin.addAuthority(Authority.ROLE_ADMIN);
+        admin.addAuthority(Authority.ROLE_USER);
+        userService.save(admin);
 
-        User user = User.builder()
+        UserMapper user = UserMapper.builder()
                 .email("user@mail.com")
                 .name("사용자")
                 .cellPhone("010-1111-2222")
                 .active(true)
-                .password(passwordEncoder.encode("1111"))
+                .password("1111")
                 .build();
-        User saveUser = userService.save(user);
-        saveUser.addAuthority(new Authority(Authority.ROLE_USER));
-        userService.save(saveUser);
+        user.addAuthority(Authority.ROLE_USER);
+        userService.save(user);
+
+
 
 //        try {
 //            userService.deleteByEmail("admin@mail.com");

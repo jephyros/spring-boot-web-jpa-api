@@ -1,40 +1,50 @@
 package kr.chis.springbootwebjpaapi.user.service;
 
-import javassist.NotFoundException;
 import kr.chis.springbootwebjpaapi.exception.ErrorCode;
 import kr.chis.springbootwebjpaapi.exception.UserException;
 import kr.chis.springbootwebjpaapi.user.repository.Authority;
 import kr.chis.springbootwebjpaapi.user.repository.User;
 import kr.chis.springbootwebjpaapi.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder();
+    }
+    //private final PasswordEncoder passwordEncoder;
 
     //신규 유저 저장
-    public User save(User user){
-        return userRepository.save(user);
+    public User save(UserMapper userMapper){
+        User user = userRepository.save(userMapper.convertUser(passwordEncoder));
+        userMapper.getAuthorities().forEach(
+                auth->{
+                    addAuthority(user,auth);
+                }
+        );
+
+        return user;
     }
 
     //사용자의 이름 ,전화번호를 수정한다.
-    public User modifyUser(User user){
+    public User modifyUser(UserMapper user){
         User findUser = userRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new UserException(ErrorCode.USER_DATA_NOT_FOUND));
         findUser.setName(user.getName());
         findUser.setCellPhone(user.getCellPhone());
-        return findUser;
+        return userRepository.save(findUser);
 
     }
     public User addAuthority(User user,String authority){
