@@ -23,8 +23,19 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
+    //신규 유저 저장
     public User save(User user){
         return userRepository.save(user);
+    }
+
+    //사용자의 이름 ,전화번호를 수정한다.
+    public User modifyUser(User user){
+        User findUser = userRepository.findByEmail(user.getEmail())
+                .orElseThrow(() -> new UserException(ErrorCode.USER_DATA_NOT_FOUND));
+        findUser.setName(user.getName());
+        findUser.setCellPhone(user.getCellPhone());
+        return findUser;
+
     }
     public User addAuthority(User user,String authority){
         //todo user_id is null 일경우 에러

@@ -28,7 +28,7 @@ public class UserTest {
     @DisplayName("1. 유저 권한을 추가 및 삭제 한다.")
     @Test
     public void test_1(){
-        User user = userTestHelper.createUser1();
+        User user = userTestHelper.createUser("user1");
 
         //1개추가
         user.addAuthority(new Authority(Authority.ROLE_ADMIN));

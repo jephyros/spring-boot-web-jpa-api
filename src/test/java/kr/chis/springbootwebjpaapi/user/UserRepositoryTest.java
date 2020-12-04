@@ -46,12 +46,8 @@ public class UserRepositoryTest {
     @Test
     public void test_1(){
         //given
-        System.out.println("===============>:" + userRepository.findAll().size());
-        User user1 = userTestHelper.createUser1();
 
-//        user1.addAuthority(new Authority(Authority.ROLE_ADMIN));
-//        user1.addAuthority(new Authority(Authority.ROLE_USER));
-
+        User user1 = userTestHelper.createUser("user1");
 
         //when
         User saveUser1 = userService.save(user1);
@@ -65,11 +61,9 @@ public class UserRepositoryTest {
         Optional<User> saveuser = userService.findByEmail(user1.getEmail());
         assertThat(saveuser.isPresent()).as("저장한 유저가 존재한다. Expect : true").isEqualTo(true);
         saveuser.ifPresent(user->{
-            userTestHelper.assertUser1(user);
+            userTestHelper.assertUser("user1",user1);
             assertThat(user.getAuthorities().size()).as("사용자 Role 이 2개있다. Expect : 2").isEqualTo(2);
         });
-
-        //userRepository.deleteById(saveuser.get().getId());
 
 
 
@@ -77,10 +71,10 @@ public class UserRepositoryTest {
 
     @DisplayName("2. 사용자정보를 삭제한다.")
     @Test
-    public void test_2() throws NotFoundException {
+    public void test_2() {
         //given
 
-        User user1 = userTestHelper.createUser1();
+        User user1 = userTestHelper.createUser("user1");
 
         User saveUser1 = userService.save(user1);
 
@@ -97,6 +91,35 @@ public class UserRepositoryTest {
     }
 
     //사용 이름,전화번호를 수정한다.
+
+    @DisplayName("3. 사용자 이름,전화번호를 수정한다.")
+    @Test
+    public void test_3() {
+        //given
+        User user1 = userTestHelper.createUser("user1");
+        User saveUser1 = userService.save(user1);
+        userService.addAuthority(saveUser1,Authority.ROLE_USER);
+
+        //when
+        saveUser1.setName("changeName");
+        saveUser1.setCellPhone("changeNumber");
+        userService.modifyUser(saveUser1);
+
+        //then
+        userService.findByEmail(saveUser1.getEmail())
+                .ifPresent(
+                        v->{
+                            assertThat(v.getName())
+                                    .as("사용자 이름이 수정되었는지 확인 Expect : " + saveUser1.getName())
+                                    .isEqualTo(saveUser1.getName());
+                            assertThat(v.getCellPhone())
+                                    .as("사용자 전화번호가 수정되었는지 확인 Expect : " + saveUser1.getCellPhone())
+                                    .isEqualTo(saveUser1.getCellPhone());
+                        }
+                );
+
+
+    }
 
     //사용자 신규저장시 중복 이메일로 저장이안된다.
 

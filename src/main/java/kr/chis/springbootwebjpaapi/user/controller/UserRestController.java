@@ -31,9 +31,16 @@ public class UserRestController {
 
         return ResponsePage.of(userService.list(page,size));
     }
+
     @GetMapping("/{id}")
     public User getUser(@PathVariable("id") Long userId) {
         return userService.findById(userId).orElseThrow(()-> new UserException(ErrorCode.USER_DATA_NOT_FOUND));
+
+    }
+    @PostMapping
+    public User saveUser(@RequestBody User user) {
+        //todo UserMapper (권한포함)
+        return userService.save(user);
 
     }
 }

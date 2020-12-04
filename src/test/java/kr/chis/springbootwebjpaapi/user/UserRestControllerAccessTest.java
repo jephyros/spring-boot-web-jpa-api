@@ -58,7 +58,7 @@ public class UserRestControllerAccessTest {
     @DisplayName("2. 인증 정보가 있을때 접근이 가능하다.")
     @Test
     public void test_2() throws Exception {
-        User admin = userTestHelper.createAdminRoleUser();
+        User admin = userTestHelper.createAdminRoleUser("user1");
         //given(userService.list(0,0)).willReturn(Page.empty());
         //System.out.println("---------admin:" + admin.getAuthorities().size());
         mockMvc.perform(get("/api/v1/users").with(user(admin)))

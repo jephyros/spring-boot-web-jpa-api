@@ -2,10 +2,7 @@ package kr.chis.springbootwebjpaapi.user.repository;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.chis.springbootwebjpaapi.common.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,6 +14,7 @@ import java.util.Set;
 @Entity
 @Table(name="bs_user")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
