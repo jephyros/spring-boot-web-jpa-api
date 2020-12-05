@@ -1,6 +1,7 @@
 package kr.chis.springbootwebjpaapi.user;
 
 import javassist.NotFoundException;
+import kr.chis.springbootwebjpaapi.exception.UserException;
 import kr.chis.springbootwebjpaapi.user.repository.Authority;
 import kr.chis.springbootwebjpaapi.user.repository.User;
 import kr.chis.springbootwebjpaapi.user.repository.UserRepository;
@@ -18,6 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 @DataJpaTest
 //@SpringBootTest
@@ -128,5 +130,29 @@ public class UserRepositoryTest {
     //사용자 신규저장시 중복 이메일로 저장이안된다.
 
 
-    //todo - 유저이메일은 중복저장이안된다. 유저 수정,삭제 ,업데이트 테스트케이
+    @DisplayName("4. 중복이메일 저장이 안된다.")
+    @Test
+    public void test_4(){
+        //given
+
+        UserMapper user1 = userTestHelper.createUserMapper("user1");
+        User saveUser1 = userService.save(user1);
+
+
+        //when then
+        UserMapper user2 = userTestHelper.createUserMapper("user1");
+        user2.setEmail("user1@mail.com");
+        Throwable throwable = catchThrowable(() -> {
+            userService.save(user2);
+        });
+
+        assertThat(throwable)
+                .as("중복된 이메일을 저장하려고할때 UserException 이 발생한다.")
+                .isInstanceOf(UserException.class);
+
+
+    }
+
+
+    //todo - 유저 수정,삭제 ,업데이트 테스트케이
 }

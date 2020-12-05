@@ -28,6 +28,12 @@ public class UserService implements UserDetailsService {
 
     //신규 유저 저장
     public User save(UserMapper userMapper){
+        //이메일 중복 확인
+        userRepository.findByEmail(userMapper.getEmail())
+                .ifPresent(user->{
+                    throw new UserException(ErrorCode.EMAIL_DUPLICATION);
+                });
+        //이상없으면 저장 
         User user = userRepository.save(userMapper.convertUser(passwordEncoder));
         userMapper.getAuthorities().forEach(
                 auth->{

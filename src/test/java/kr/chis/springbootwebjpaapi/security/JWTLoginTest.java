@@ -48,6 +48,7 @@ public class JWTLoginTest {
 
     @BeforeEach()
     public void before(){
+        userService.deleteAll();
         restTemplate = new RestTemplate();
         userTestHelper = new UserTestHelper(new BCryptPasswordEncoder());
 
