@@ -1,5 +1,6 @@
 package kr.chis.springbootwebjpaapi.user.service;
 
+import kr.chis.springbootwebjpaapi.common.CommonUtils;
 import kr.chis.springbootwebjpaapi.exception.ErrorCode;
 import kr.chis.springbootwebjpaapi.exception.UserException;
 import kr.chis.springbootwebjpaapi.user.repository.Authority;
@@ -28,6 +29,15 @@ public class UserService implements UserDetailsService {
 
     //신규 유저 저장
     public User save(UserMapper userMapper){
+
+        //이름 이메일 패스워드 및 권한 은 필수
+        if (CommonUtils.isEmpty(userMapper.getEmail())
+                || CommonUtils.isEmpty(userMapper.getName())
+                || CommonUtils.isEmpty(userMapper.getPassword())
+        ){
+            throw new UserException(ErrorCode.EMAIL_NAME_PASSWORD_MANDATORY);
+        }
+
         //이메일 중복 확인
         userRepository.findByEmail(userMapper.getEmail())
                 .ifPresent(user->{

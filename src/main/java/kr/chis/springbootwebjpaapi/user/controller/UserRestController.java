@@ -7,6 +7,7 @@ import kr.chis.springbootwebjpaapi.exception.UserException;
 import kr.chis.springbootwebjpaapi.user.repository.User;
 import kr.chis.springbootwebjpaapi.user.service.UserMapper;
 import kr.chis.springbootwebjpaapi.user.service.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 

@@ -152,6 +152,39 @@ public class UserRepositoryTest {
 
 
     }
+    @DisplayName("5. 이메일 ,이름 , 전화번호는 필수 이다.")
+    @Test
+    public void test_5(){
+        //given when then
+        UserMapper user2 = userTestHelper.createUserMapper("user1");
+        user2.setEmail(null);
+        Throwable throwable = catchThrowable(() -> {
+            userService.save(user2);
+        });
+        assertThat(throwable)
+                .as("이메일이 Null 이면 UserException 이 발생한다.")
+                .isInstanceOf(UserException.class);
+
+        UserMapper user3 = userTestHelper.createUserMapper("user1");
+        user3.setName(null);
+        throwable = catchThrowable(() -> {
+            userService.save(user3);
+        });
+        assertThat(throwable)
+                .as("이름이 Null 이면 UserException 이 발생한다.")
+                .isInstanceOf(UserException.class);
+
+        UserMapper user4 = userTestHelper.createUserMapper("user1");
+        user4.setPassword(null);
+        throwable = catchThrowable(() -> {
+            userService.save(user4);
+        });
+        assertThat(throwable)
+                .as("패스워드가 Null 이면 UserException 이 발생한다.")
+                .isInstanceOf(UserException.class);
+
+
+    }
 
 
     //todo - 유저 수정,삭제 ,업데이트 테스트케이

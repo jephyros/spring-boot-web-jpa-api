@@ -15,7 +15,7 @@ import java.time.Instant;
 public class JWTUtil {
     private String secretKey ="secretKey";
     private Algorithm al = Algorithm.HMAC512(secretKey);
-    private long lifeTime= 600;
+    private long lifeTime= 1800;
 
     public String createToken(String userId){
         return JWT.create()

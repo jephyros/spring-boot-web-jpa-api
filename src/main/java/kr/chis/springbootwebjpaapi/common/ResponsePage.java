@@ -3,6 +3,7 @@ package kr.chis.springbootwebjpaapi.common;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.sun.istack.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -29,9 +30,9 @@ public class ResponsePage<T> extends PageImpl<T> {
         super(content, PageRequest.of(number, size), totalElements);
     }
 
-    public static <U> ResponsePage of(Page<U> page){
-        if (page == null) return new ResponsePage<U>(Page.empty());
-        return new ResponsePage<U>(page);
+    public static <U> ResponsePage<U> of(Page<U> page){
+        if (page == null) return new ResponsePage<>(Page.empty());
+        return new ResponsePage<>(page);
     }
 
     public ResponsePage(Page<T> page) {
