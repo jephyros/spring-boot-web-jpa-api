@@ -1,6 +1,5 @@
 package kr.chis.springbootwebjpaapi.user;
 
-import kr.chis.springbootwebjpaapi.common.ResponsePage;
 import kr.chis.springbootwebjpaapi.config.WebSecurityConfig;
 import kr.chis.springbootwebjpaapi.user.controller.UserRestController;
 import kr.chis.springbootwebjpaapi.user.repository.User;
@@ -11,15 +10,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

@@ -3,7 +3,7 @@ package kr.chis.springbootwebjpaapi.user;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.chis.springbootwebjpaapi.common.ResponsePage;
+import kr.chis.springbootwebjpaapi.common.ResponsePageImpl;
 import kr.chis.springbootwebjpaapi.config.LoginMapper;
 import kr.chis.springbootwebjpaapi.user.repository.Authority;
 import kr.chis.springbootwebjpaapi.user.repository.User;
@@ -95,8 +95,8 @@ public class UserRestControllerTest {
 
         ResponseEntity<String> response = restTemplate.exchange(uri("/api/v1/users"), HttpMethod.GET, entity, String.class);
 
-        ResponsePage<User> page = objectMapper.readValue(response.getBody(),
-                new TypeReference<ResponsePage<User>>() {
+        ResponsePageImpl<User> page = objectMapper.readValue(response.getBody(),
+                new TypeReference<ResponsePageImpl<User>>() {
                 });
         assertThat(page.getTotalElements()).as("DB상의 유저수는 2명이다. Expect : 2").isEqualTo(2);
 

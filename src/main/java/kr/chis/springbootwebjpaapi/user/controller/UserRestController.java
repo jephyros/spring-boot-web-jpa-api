@@ -1,17 +1,12 @@
 package kr.chis.springbootwebjpaapi.user.controller;
 
-import javassist.NotFoundException;
-import kr.chis.springbootwebjpaapi.common.ResponsePage;
+import kr.chis.springbootwebjpaapi.common.ResponsePageImpl;
 import kr.chis.springbootwebjpaapi.exception.ErrorCode;
 import kr.chis.springbootwebjpaapi.exception.UserException;
 import kr.chis.springbootwebjpaapi.user.repository.User;
 import kr.chis.springbootwebjpaapi.user.service.UserMapper;
 import kr.chis.springbootwebjpaapi.user.service.UserService;
-import org.springframework.data.domain.Page;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.AccessControlException;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -26,12 +21,12 @@ public class UserRestController {
     }
 
     @GetMapping
-    public ResponsePage<User> list(
+    public ResponsePageImpl<User> list(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size
     ){
 
-        return ResponsePage.of(userService.list(page,size));
+        return ResponsePageImpl.of(userService.list(page,size));
     }
 
     @GetMapping("/{id}")
