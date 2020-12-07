@@ -13,6 +13,11 @@ import java.time.Instant;
  * Remark :
  */
 public class JWTUtil {
+    public static final String AUTH_HEADER = "authorization";
+    public static final String REFRESH_HEADER ="refresh-token ";
+    public static final String BEARER ="Bearer ";
+
+
     private String secretKey ="secretKey";
     private Algorithm al = Algorithm.HMAC512(secretKey);
     private long lifeTime= 1800;

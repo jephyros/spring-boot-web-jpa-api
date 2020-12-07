@@ -142,9 +142,7 @@ public class UserRepositoryTest {
         //when then
         UserMapper user2 = userTestHelper.createUserMapper("user1");
         user2.setEmail("user1@mail.com");
-        Throwable throwable = catchThrowable(() -> {
-            userService.save(user2);
-        });
+        Throwable throwable = catchThrowable(() -> userService.save(user2));
 
         assertThat(throwable)
                 .as("중복된 이메일을 저장하려고할때 UserException 이 발생한다.")
@@ -158,9 +156,7 @@ public class UserRepositoryTest {
         //given when then
         UserMapper user2 = userTestHelper.createUserMapper("user1");
         user2.setEmail(null);
-        Throwable throwable = catchThrowable(() -> {
-            userService.save(user2);
-        });
+        Throwable throwable = catchThrowable(() -> userService.save(user2));
         assertThat(throwable)
                 .as("이메일이 Null 이면 UserException 이 발생한다.")
                 .isInstanceOf(UserException.class);
@@ -186,6 +182,4 @@ public class UserRepositoryTest {
 
     }
 
-
-    //todo - 유저 수정,삭제 ,업데이트 테스트케이
 }

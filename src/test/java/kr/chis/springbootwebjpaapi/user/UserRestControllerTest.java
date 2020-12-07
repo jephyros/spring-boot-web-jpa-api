@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.chis.springbootwebjpaapi.common.ResponsePageImpl;
+import kr.chis.springbootwebjpaapi.config.JWTUtil;
 import kr.chis.springbootwebjpaapi.config.LoginMapper;
+import kr.chis.springbootwebjpaapi.config.Token;
 import kr.chis.springbootwebjpaapi.user.repository.Authority;
 import kr.chis.springbootwebjpaapi.user.repository.User;
 import kr.chis.springbootwebjpaapi.user.service.UserMapper;
@@ -25,6 +27,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -50,7 +53,7 @@ public class UserRestControllerTest {
 
 
 
-    private RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate = new RestTemplate();
 
     private URI uri(String path) throws URISyntaxException {
         return new URI(format("http://localhost:%d%s",port,path));
@@ -63,12 +66,17 @@ public class UserRestControllerTest {
 
     }
 
-    private String getToken(String username,String password) throws URISyntaxException {
+    private Token getToken(String username, String password) throws URISyntaxException {
         LoginMapper loginUser = LoginMapper.builder().username(username).password(password).build();
         HttpEntity<LoginMapper> body = new HttpEntity<>(loginUser);
         ResponseEntity<String> response = restTemplate.exchange(uri("/token"), HttpMethod.POST, body, String.class);
 
-        return response.getHeaders().get("authorization").toString();
+        return Token.builder().accessToken(getAccessToken(response)).build();
+    }
+
+    private String getAccessToken(ResponseEntity<String> response) {
+        return Objects.requireNonNull(response.getHeaders().get(JWTUtil.AUTH_HEADER)).get(0)
+                .substring((JWTUtil.BEARER).length());
     }
 
     @DisplayName("1. Admin 유저는 UserList를 가져올수있다.")
@@ -84,19 +92,19 @@ public class UserRestControllerTest {
         userService.save(user2);
 
         userTestHelper.assertUser("user1",saveUser);
-        String token = getToken(user1.getEmail(), "user11234").substring(("Bearer ").length()+1);
+        String token = getToken(user1.getEmail(), "user11234").getAccessToken();
 
 
         //when
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + token);
+        headers.add(JWTUtil.AUTH_HEADER, JWTUtil.BEARER + token);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
 
         ResponseEntity<String> response = restTemplate.exchange(uri("/api/v1/users"), HttpMethod.GET, entity, String.class);
 
         ResponsePageImpl<User> page = objectMapper.readValue(response.getBody(),
-                new TypeReference<ResponsePageImpl<User>>() {
+                new TypeReference<>() {
                 });
         assertThat(page.getTotalElements()).as("DB상의 유저수는 2명이다. Expect : 2").isEqualTo(2);
 

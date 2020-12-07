@@ -43,11 +43,11 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult)  {
         User user = (User) authResult.getPrincipal();
         log.info("로그인 성공 : {}",user.getEmail());
 
-        response.addHeader("authorization","Bearer " + jwtUtil.createToken(user.getEmail()));
+        response.addHeader(JWTUtil.AUTH_HEADER,JWTUtil.BEARER + jwtUtil.createToken(user.getEmail()));
         //super.successfulAuthentication(request, response, chain, authResult);
     }
 
