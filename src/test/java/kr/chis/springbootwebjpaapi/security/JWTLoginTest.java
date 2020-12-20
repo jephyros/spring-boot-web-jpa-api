@@ -67,7 +67,7 @@ public class JWTLoginTest {
         UserMapper user1 = userTestHelper.createUserMapper("user1");
         userService.save(user1);
 
-        LoginMapper loginUser = LoginMapper.builder().username(user1.getEmail()).password("user11234").build();
+        LoginMapper loginUser = LoginMapper.builder().loginType(LoginMapper.LoginType.userid).username(user1.getEmail()).password("user11234").build();
         HttpEntity<LoginMapper> body = new HttpEntity<>(loginUser);
         ResponseEntity<String> response = restTemplate.exchange(uri("/token"), HttpMethod.POST, body, String.class);
 

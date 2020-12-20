@@ -6,6 +6,12 @@ import lombok.*;
 @Setter
 @Builder
 public class LoginMapper {
+    public enum LoginType{
+        userid,
+        refresh
+    }
+    private LoginType loginType;
     private String username;
     private String password;
+    private String refreshToken;
 }

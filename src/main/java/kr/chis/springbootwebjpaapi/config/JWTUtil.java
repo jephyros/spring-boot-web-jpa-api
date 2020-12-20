@@ -20,15 +20,35 @@ public class JWTUtil {
 
     private String secretKey ="secretKey";
     private Algorithm al = Algorithm.HMAC512(secretKey);
-    private long lifeTime= 1800;
+    private long accessLifeTime = 60* 30; // 30분
+    private long refreshLifeTime= 60 * 60 * 24; //24시간
 
-    public String createToken(String userId){
+    public static enum TokenType {
+        access,
+        refresh
+
+    }
+
+    public String createToken(String userId,TokenType tokenType){
         return JWT.create()
                 .withSubject(userId)
-                .withClaim("exp", Instant.now().getEpochSecond() + lifeTime)
+                .withClaim("exp", Instant.now().getEpochSecond() + getLifeTime(tokenType))
                 .sign(al);
 
     }
+
+    private long getLifeTime(TokenType tokenType) {
+        switch (tokenType){
+            case access:
+                return this.accessLifeTime;
+            case refresh:
+                return this.refreshLifeTime;
+            default:
+                return this.accessLifeTime;
+        }
+
+    }
+
     public JWTVerify verify(String token){
 
         try {

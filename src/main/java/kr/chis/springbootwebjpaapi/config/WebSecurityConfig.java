@@ -41,13 +41,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        JWTLoginFilter jwtLoginFilter = new JWTLoginFilter(jwtUtil ,objectMapper, authenticationManager());
+        JWTLoginFilterRefreshable jwtLoginFilterRefreshable = new JWTLoginFilterRefreshable(jwtUtil ,objectMapper, authenticationManager(), userService);
         JWTCheckFilter jwtCheckFilter = new JWTCheckFilter(jwtUtil,userService,authenticationManager());
 
         http
                 .csrf().disable()
                 .authorizeRequests().antMatchers("/users/**").permitAll().and()
-                .addFilter(jwtLoginFilter)
+                .addFilter(jwtLoginFilterRefreshable)
                 .addFilter(jwtCheckFilter)
 
                 .authorizeRequests().antMatchers("/**").authenticated()

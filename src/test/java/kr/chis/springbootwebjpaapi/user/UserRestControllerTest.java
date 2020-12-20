@@ -67,7 +67,7 @@ public class UserRestControllerTest {
     }
 
     private Token getToken(String username, String password) throws URISyntaxException {
-        LoginMapper loginUser = LoginMapper.builder().username(username).password(password).build();
+        LoginMapper loginUser = LoginMapper.builder().loginType(LoginMapper.LoginType.userid).username(username).password(password).build();
         HttpEntity<LoginMapper> body = new HttpEntity<>(loginUser);
         ResponseEntity<String> response = restTemplate.exchange(uri("/token"), HttpMethod.POST, body, String.class);
 

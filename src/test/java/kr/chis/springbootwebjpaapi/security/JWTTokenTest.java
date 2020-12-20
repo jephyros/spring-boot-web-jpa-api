@@ -49,7 +49,7 @@ public class JWTTokenTest {
     @Test
     public void test_2(){
         JWTUtil jwtUtil = new JWTUtil();
-        String token = jwtUtil.createToken("user@mail.com");
+        String token = jwtUtil.createToken("user@mail.com", JWTUtil.TokenType.access);
         JWTVerify verify = jwtUtil.verify(token);
         JWTVerify verify2 = jwtUtil.verify(token+"err");
 
