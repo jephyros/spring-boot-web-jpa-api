@@ -57,8 +57,7 @@ public class JWTLoginFilterRefreshable extends UsernamePasswordAuthenticationFil
             if(verify.getVerify()){
                 User user = userService.findByEmail(verify.getUserId()).orElseThrow(() -> new LoginException("사용자정보가 올바르지 않습니다."));
 
-                //todo 수정중~~~~~~~~
-                return null;
+                return new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
 
             }else{
                 throw new TokenExpiredException("리프레시 토큰이 만료되었습니다.");
@@ -76,6 +75,7 @@ public class JWTLoginFilterRefreshable extends UsernamePasswordAuthenticationFil
         log.info("로그인 성공 : {}",user.getEmail());
 
         response.addHeader(JWTUtil.AUTH_HEADER,JWTUtil.BEARER + jwtUtil.createToken(user.getEmail(), JWTUtil.TokenType.access));
+        response.addHeader(JWTUtil.REFRESH_HEADER,JWTUtil.BEARER + jwtUtil.createToken(user.getEmail(),JWTUtil.TokenType.refresh));
         //super.successfulAuthentication(request, response, chain, authResult);
     }
 
